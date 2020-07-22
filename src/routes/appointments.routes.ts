@@ -15,14 +15,13 @@ const appointments: Appointment[] = []
 appointmentsRouter.post('/', (request, response ) => {
     const { provider, date } = request.body
 
-    const parsedDate = startOfHour(parseISO(date))
+    const parsedDate = startOfHour(parseISO(date)) //mantem so o valor da hora e era o resto, parseIso transfora date em um objeto Date()
 
     const findAppointmentsInSameDate = appointments.find(appointment => isEqual(parsedDate, appointment.date))
 
     if(findAppointmentsInSameDate) {
         return response.status(404).json({message: 'this appointment has been already booked'})
     }
-
 
     const appointment = {
         id: uuid(),
