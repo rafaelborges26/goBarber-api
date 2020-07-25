@@ -1,6 +1,7 @@
 import Appointment from '../models/Appointment'
 import AppointmentsRepository from '../repositories/AppointmentsRepository'
 import { startOfHour } from 'date-fns'
+import { getCustomRepository } from 'typeorm'
 
 
 interface RequestDTO {
@@ -11,28 +12,24 @@ interface RequestDTO {
 
 class CreateAppointmentService {
 
-private appointmentsRepository: AppointmentsRepository
+    public async execute({provider, date}:RequestDTO): Promise<Appointment> {
 
-
-    constructor(appointmentsRepository: AppointmentsRepository ) {
-        this.appointmentsRepository = appointmentsRepository //defini o this para usar na classe
-    }
-
-    public execute({provider, date}:RequestDTO): Appointment {
-
+    const appointmentsRepository = getCustomRepository(AppointmentsRepository) //para dar a variavel o poder de utilizar comandos sql
     const appointmentDate = startOfHour(date)
 
-    const findAppointmentsInSameDate = this.appointmentsRepository.findByDate(appointmentDate)
+    const findAppointmentsInSameDate = await appointmentsRepository.findByDate(appointmentDate)
 
    if(findAppointmentsInSameDate) {
        throw Error('this appointment has been already booked')
        //return response.status(404).json({message: })
    }
 
-   const appointment = this.appointmentsRepository.create(
+   const appointment = appointmentsRepository.create(
        {provider,
         date: appointmentDate
-       })
+       })//criação do repositorio, depois precisamos salvar
+
+       await appointmentsRepository.save(appointment) //salvando a criação do registro
 
        return appointment
     }
