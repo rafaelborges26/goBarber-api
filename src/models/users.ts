@@ -1,11 +1,11 @@
-import {Entity, Column, PrimaryColumn, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm'
+import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm'
 
 interface userConstructor {
     name: string,
     email: string
 }
 
-@Entity('user')
+@Entity('users')
 class User {
 
     @PrimaryGeneratedColumn('uuid')
