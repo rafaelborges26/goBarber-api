@@ -1,0 +1,46 @@
+import { getRepository } from 'typeorm'
+import { compare } from 'bcryptjs'
+import User from '../models/users'
+import { sign } from 'jsonwebtoken'
+
+interface Request {
+    email: string
+    password: string
+}
+
+interface Response {
+    user : User
+    token: string
+}
+
+class AuthenticateUserService {
+
+    public async execute( { email, password}: Request ): Promise<Response>  {
+        const usersRepository = getRepository(User)
+        const user = await usersRepository.findOne({
+            where: {email: email}
+        })
+
+    if(!user) {
+        throw new Error('Incorrect email/Password combination.')
+
+    }
+        const passwordMached = await compare(password, user.password)
+
+        if(!passwordMached) {
+            throw new Error('Incorrect email/Password combination.')
+        }
+
+
+        const token = sign({}, 'e97c13e8dbd715c4638f300620a513ba', {
+            subject: user.id,
+            expiresIn: '1d'
+        }) //1 n eh seguro colocar senha, pois qqr um consegue acessar, eh bom colocar id, nome do user, permissoes.. infos q iremos precisar utilizar de maneira mais facil
+
+        return {user,token
+        }
+
+    }
+}
+
+export default AuthenticateUserService
