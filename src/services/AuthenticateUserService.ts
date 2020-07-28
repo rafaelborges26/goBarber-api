@@ -2,6 +2,9 @@ import { getRepository } from 'typeorm'
 import { compare } from 'bcryptjs'
 import User from '../models/users'
 import { sign } from 'jsonwebtoken'
+import authConfig from '../config/auth'
+import { request } from 'express'
+
 
 interface Request {
     email: string
@@ -31,14 +34,14 @@ class AuthenticateUserService {
             throw new Error('Incorrect email/Password combination.')
         }
 
+        const { secret, expiresIn } = authConfig.jwt
 
-        const token = sign({}, 'e97c13e8dbd715c4638f300620a513ba', {
+        const token = sign({}, secret, {
             subject: user.id,
-            expiresIn: '1d'
-        }) //1 n eh seguro colocar senha, pois qqr um consegue acessar, eh bom colocar id, nome do user, permissoes.. infos q iremos precisar utilizar de maneira mais facil
+            expiresIn
+        }) //sigh{}: n eh seguro colocar senha, pois qqr um consegue acessar, eh bom colocar id, nome do user, permissoes.. infos q iremos precisar utilizar de maneira mais facil
 
-        return {user,token
-        }
+        return {user,token}
 
     }
 }

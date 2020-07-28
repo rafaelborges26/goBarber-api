@@ -4,8 +4,11 @@ import AppointmentsRepository from '../repositories/AppointmentsRepository'
 import { parseISO, } from 'date-fns'
 import CreateAppointmentService from '../services/CreateAppointmentService'
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated'
+
 const appointmentsRouter = Router()
 
+appointmentsRouter.use(ensureAuthenticated)
 
 appointmentsRouter.post('/', async (request, response ) => {
 
@@ -29,6 +32,7 @@ appointmentsRouter.post('/', async (request, response ) => {
 })
 
 appointmentsRouter.get('/', async (request, response )=> {
+    console.log(request.user)
     const appointmentsRepository = getCustomRepository(AppointmentsRepository)
     const appointments = await appointmentsRepository.find() //função do type orm, retornando todos os dados
     return response.json({appointments})
