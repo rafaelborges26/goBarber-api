@@ -12,8 +12,6 @@ appointmentsRouter.use(ensureAuthenticated)
 
 appointmentsRouter.post('/', async (request, response ) => {
 
-    try {
-
         const { provider_id, date } = request.body
 
         //transformação dos dados da body permanece
@@ -24,10 +22,6 @@ appointmentsRouter.post('/', async (request, response ) => {
         const appointment = await createAppointment.execute({provider_id, date: parsedDate})
 
         return response.json(appointment)
-
-    }catch (err){
-        return response.status(400).json({error: err.message })
-    }
 
 })
 

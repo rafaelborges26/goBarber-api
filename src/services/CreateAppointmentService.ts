@@ -1,3 +1,4 @@
+import AppError from '../errors/AppError'
 import Appointment from '../models/Appointment'
 import AppointmentsRepository from '../repositories/AppointmentsRepository'
 import { startOfHour } from 'date-fns'
@@ -20,7 +21,7 @@ class CreateAppointmentService {
     const findAppointmentsInSameDate = await appointmentsRepository.findByDate(appointmentDate)
 
    if(findAppointmentsInSameDate) {
-       throw Error('this appointment has been already booked')
+       throw new AppError('this appointment has been already booked')
        //return response.status(404).json({message: })
    }
 
