@@ -1,10 +1,5 @@
 import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm'
 
-interface userConstructor {
-    name: string,
-    email: string
-}
-
 @Entity('users')
 class User {
 

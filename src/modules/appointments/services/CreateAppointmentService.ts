@@ -1,5 +1,5 @@
 import AppError from '../../../shared/errors/AppError'
-import Appointment from '../entities/Appointment'
+import Appointment from '../infra/typeorm/entities/Appointment'
 import AppointmentsRepository from '../../../modules/appointments/repositories/AppointmentsRepository'
 import { startOfHour } from 'date-fns'
 import { getCustomRepository } from 'typeorm'

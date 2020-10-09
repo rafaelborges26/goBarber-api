@@ -1,4 +1,4 @@
-import Appointment from '../entities/Appointment' //obter formato dos dados
+import Appointment from '../infra/typeorm/entities/Appointment' //obter formato dos dados
 import {EntityRepository, Repository} from 'typeorm' //ter acesso as funções sql
 
 @EntityRepository(Appointment)

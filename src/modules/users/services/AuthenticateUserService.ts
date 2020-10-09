@@ -1,10 +1,10 @@
 import { getRepository } from 'typeorm'
 import { compare } from 'bcryptjs'
-import User from '../entities/users'
+import User from '../infra/typeorm/entities/users'
 import { sign } from 'jsonwebtoken'
-import authConfig from '../../../config/auth'
+import authConfig from '@config/auth'
 import { request } from 'express'
-import AppError from '../../../shared/errors/AppError'
+import AppError from '@shared/errors/AppError'
 
 
 interface Request {

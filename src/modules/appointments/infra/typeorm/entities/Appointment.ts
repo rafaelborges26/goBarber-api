@@ -5,7 +5,7 @@ interface appointmentConstructor {
     date: Date
 }
 
-import User from '../../users/entities/users'
+import User from '../../../../users/infra/typeorm/entities/users'
 
 
 
