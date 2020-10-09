@@ -1,8 +1,8 @@
-import CreateAppointmentService from "./CreateAppointmentService"
+import CreateAppointmentService from "../modules/appointments/services/CreateAppointmentService"
 import User from '../models/users'
 import { getRepository } from 'typeorm'
 import { hash } from 'bcryptjs'
-import AppError from '../errors/AppError'
+import AppError from '../shared/errors/AppError'
 
 interface Request {
     name: string
