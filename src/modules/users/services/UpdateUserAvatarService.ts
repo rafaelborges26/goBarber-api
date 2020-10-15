@@ -6,16 +6,20 @@ import path from 'path'
 import fs from 'fs'
 import AppError from '@shared/errors/AppError'
 import IUsersRepository from '../repositories/IUsersRepository'
+import { inject, injectable } from 'tsyringe'
+
 
 interface Request {
     user_id: string
     avatarFilename: string
 }
 
+@injectable()
 class UpdateUserAvatarService {
 
 
     constructor(
+        @inject('UsersRepository')
         private usersRepository: IUsersRepository
     ) {}
 

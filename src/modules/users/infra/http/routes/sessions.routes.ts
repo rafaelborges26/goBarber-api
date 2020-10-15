@@ -1,28 +1,12 @@
-import { Router, request, response } from 'express'
-import AuthenticateService from '@modules/users/services/AuthenticateUserService'
+import { Router } from 'express'
 
-import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository'
-
-
+import SessionsController from '../controllers/SessionsController'
 
 const sessionsRouter = Router()
 
-sessionsRouter.post('/', async (request, response ) => {
+const sessionsController = new SessionsController()
 
-        const { email, password } = request.body
+sessionsRouter.post('/', sessionsController.create)
 
-        const usersRepository = new UsersRepository()
-        const authenticateUser = new AuthenticateService(usersRepository)
-
-        const { user, token } = await authenticateUser.execute({
-            email,
-            password
-        })
-
-        delete user.password
-
-        return response.json({user, token})
-
-})
 
 export default sessionsRouter

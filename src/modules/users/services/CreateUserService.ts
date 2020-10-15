@@ -1,7 +1,7 @@
-import CreateAppointmentService from "@modules/appointments/services/CreateAppointmentService"
 import User from '@modules/users/infra/typeorm/entities/users'
 import { hash } from 'bcryptjs'
 import AppError from '@shared/errors/AppError'
+import { inject, injectable } from 'tsyringe'
 
 import IUsersRepository from '../repositories/IUsersRepository'
 
@@ -12,10 +12,11 @@ interface IRequest {
 }
 
 
-
+@injectable()
 class CreateUserService {
 
     constructor(
+        @inject('UsersRepository')
         private usersRepository: IUsersRepository
     ) {}
 

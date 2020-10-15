@@ -4,6 +4,7 @@ import { sign } from 'jsonwebtoken'
 import authConfig from '@config/auth'
 import { request } from 'express'
 import AppError from '@shared/errors/AppError'
+import { inject, injectable } from 'tsyringe'
 
 import IUsersRepository from '../repositories/IUsersRepository'
 
@@ -17,10 +18,11 @@ interface IResponse {
     user : User
     token: string
 }
-
+@injectable()
 class AuthenticateUserService {
 
     constructor(
+        @inject('UsersRepository')
         private usersRepository: IUsersRepository
     ) {}
 

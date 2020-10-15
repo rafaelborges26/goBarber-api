@@ -6,7 +6,7 @@ import '../typeorm'
 import uploadConfig from '@config/upload'
 import AppError from '@shared/errors/AppError'
 import cors from 'cors'
-
+import '@shared/container'
 
 const app = express()
 

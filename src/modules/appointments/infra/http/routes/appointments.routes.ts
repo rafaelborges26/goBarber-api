@@ -4,8 +4,11 @@ import { parseISO, } from 'date-fns'
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService'
 
 import ensureAuthenticated from '@modules/users/middlewares/ensureAuthenticated'
+import AppointmentsController from '../controllers/AppointmentsController'
 
 const appointmentsRouter = Router()
+
+const appointmentsController = new AppointmentsController()
 
 appointmentsRouter.use(ensureAuthenticated)
 
@@ -16,22 +19,8 @@ appointmentsRouter.use(ensureAuthenticated)
 //    return response.json({appointments})
 //})
 
+appointmentsRouter.post('/', appointmentsController.create)
 
-appointmentsRouter.post('/', async (request, response ) => {
 
-        const { provider_id, date } = request.body
-
-        const appointmentsRepository = new AppointmentsRepository();
-
-        //transformação dos dados da body permanece
-        const parsedDate = parseISO(date) //Transforma em Date
-
-        const createAppointment = new CreateAppointmentService(appointmentsRepository)
-
-        const appointment = await createAppointment.execute({provider_id, date: parsedDate})
-
-        return response.json(appointment)
-
-})
 
 export default appointmentsRouter
