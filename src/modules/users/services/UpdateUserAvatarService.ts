@@ -2,6 +2,7 @@ import { UpdateDateColumn } from "typeorm";
 
 import User from '../infra/typeorm/entities/users'
 import uploadConfig from '@config/upload'
+import ISotrageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider'
 import path from 'path'
 import fs from 'fs'
 import AppError from '@shared/errors/AppError'
@@ -20,7 +21,10 @@ class UpdateUserAvatarService {
 
     constructor(
         @inject('UsersRepository')
-        private usersRepository: IUsersRepository
+        private usersRepository: IUsersRepository,
+
+        @inject('StorageProvider')
+        private storageProvider: ISotrageProvider,
     ) {}
 
     public async execute( {user_id, avatarFilename}:Request ):Promise<User> {
@@ -33,18 +37,13 @@ class UpdateUserAvatarService {
         }
 
         if(user.avatar) {
-            //deletar avatar anterior
-
-            const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar) //juntando o caminho mais o nome do arquivo para formar um caminho só
-            const userAvtarFileExists = await fs.promises.stat(userAvatarFilePath) //obterá o status do arquivo se ele existir
-
-            if(userAvtarFileExists) {
-                await fs.promises.unlink(userAvatarFilePath) //eexclui o arquivo de avatar
-            }
+            await this.storageProvider.deleteFile(user.avatar)
         }
 
+        const fileName = await this.storageProvider.saveFile(avatarFilename)
+
         //setar o novo
-        user.avatar = avatarFilename
+        user.avatar = fileName
 
         await this.usersRepository.save(user)
 
