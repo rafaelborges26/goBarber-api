@@ -6,7 +6,7 @@ import User from '../../infra/typeorm/entities/users' //obter formato dos dados
 
 //deixar os metodos prontos para uso, sem precisar utilizar a lib do typeorm fora daqui
 
-class UsersRepository implements IUsersRepository { //repository do typeorm
+class FakeUsersRepository implements IUsersRepository { //repository do typeorm
    private users: User[] = []
 
 
@@ -42,4 +42,4 @@ class UsersRepository implements IUsersRepository { //repository do typeorm
 
 }
 
-export default UsersRepository
+export default FakeUsersRepository

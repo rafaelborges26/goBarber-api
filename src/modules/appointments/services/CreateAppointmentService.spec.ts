@@ -31,7 +31,7 @@ describe('CreateAppointment', () => {
             provider_id: '123123456'
         })
 
-        expect(createAppointmentService.execute({
+        await expect(createAppointmentService.execute({
             date: appointmentDate,
             provider_id: '123123456'
         })).rejects.toBeInstanceOf(AppError) //rejeição, ou seja de erro e q seja uma instancia da classe erro.

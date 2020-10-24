@@ -11,8 +11,8 @@ export default class FakeMailProvider implements IMailProvider {
 
     public async sendMail(to: string, body: string): Promise<void> {
         this.messages.push({
-            to: 'rafael.borges2698@gmail.com',
-            body: 'Hey friend, how are you?'
+            to,
+            body
         })
     }
 }
