@@ -3,6 +3,6 @@ interface ITemplateVariables {
 }
 
 export default interface IParseMailTemplateDTO {
-    template: string
+    file: string
     variables: ITemplateVariables//quando for um objeto, mas n sabemos qual as propriedades nem quantas.
 }
