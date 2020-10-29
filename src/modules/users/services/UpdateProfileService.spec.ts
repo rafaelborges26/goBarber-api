@@ -106,4 +106,16 @@ describe('UpdateProfile', () => {
         })).rejects.toBeInstanceOf(AppError)
     })
 
+    it('should not be able to update the password if user not exists ', async () => {
+
+        await expect(updateProfile.execute({
+            user_id: 'non-existing',
+            name: 'John Tre',
+            email: 'johntre@gmail.com',
+            old_password: '123456',
+            password: '123123'
+        })).rejects.toBeInstanceOf(AppError)
+    })
+
+
 })
