@@ -3,12 +3,24 @@ import IUsersRepository from '@modules/users/repositories/IUsersRepository'
 
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO'
 import User from '../../infra/typeorm/entities/users' //obter formato dos dados
+import IFindAllProviderDTO from '../../dtos/IFindAllProviderDTO'
 
 //deixar os metodos prontos para uso, sem precisar utilizar a lib do typeorm fora daqui
 
 class FakeUsersRepository implements IUsersRepository { //repository do typeorm
    private users: User[] = []
 
+
+   public async findAllProviders({expect_user_id} : IFindAllProviderDTO):Promise<User[]>{
+
+    let users = this.users
+
+       if(expect_user_id) {
+         users = this.users.filter(user => user.id !== expect_user_id)
+       }
+
+       return users
+   }
 
     public async findByid(id: string): Promise<User | undefined> {
         const findUser = this.users.find(user => user.id === id)
