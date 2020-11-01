@@ -16,6 +16,7 @@ describe('CreateAppointment', () => {
 
         const appointment = await createAppointmentService.execute({
             date: new Date(),
+            user_id: '123123456',
             provider_id: '123123456'
         })
 
@@ -28,11 +29,13 @@ describe('CreateAppointment', () => {
 
         await createAppointmentService.execute({
             date: appointmentDate,
+            user_id: '123123456',
             provider_id: '123123456'
         })
 
         await expect(createAppointmentService.execute({
             date: appointmentDate,
+            user_id: '123123456',
             provider_id: '123123456'
         })).rejects.toBeInstanceOf(AppError) //rejeição, ou seja de erro e q seja uma instancia da classe erro.
 
