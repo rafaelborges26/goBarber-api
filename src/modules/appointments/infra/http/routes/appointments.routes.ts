@@ -5,10 +5,13 @@ import CreateAppointmentService from '@modules/appointments/services/CreateAppoi
 
 import ensureAuthenticated from '@modules/users/middlewares/ensureAuthenticated'
 import AppointmentsController from '../controllers/AppointmentsController'
+import ProviderAppointmentController from '../controllers/ProviderAppointmentController'
+
 
 const appointmentsRouter = Router()
 
 const appointmentsController = new AppointmentsController()
+const providerAppointmentController = new ProviderAppointmentController()
 
 appointmentsRouter.use(ensureAuthenticated)
 
@@ -21,6 +24,7 @@ appointmentsRouter.use(ensureAuthenticated)
 
 appointmentsRouter.post('/', appointmentsController.create)
 
+appointmentsRouter.get('/me', providerAppointmentController.index)
 
 
 export default appointmentsRouter
