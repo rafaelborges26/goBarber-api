@@ -1,7 +1,6 @@
 import Appointment from '../entities/Appointment' //obter formato dos dados
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository'
 import {getRepository, Repository, Between, Raw} from 'typeorm' //ter acesso as funções sql
-import { startOfMonth, endOfMonth } from 'date-fns'
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentsDTO'
 import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO'
 import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO'
