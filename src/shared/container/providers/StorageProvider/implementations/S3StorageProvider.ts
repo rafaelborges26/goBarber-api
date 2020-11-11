@@ -1,5 +1,6 @@
 import fs from 'fs'
 import aws, {S3} from 'aws-sdk'
+import mime from 'mime'
 import path from 'path'
 import uploadConfig from '@config/upload'
 import IStorageProvider from '../models/IStorageProvider'
@@ -17,31 +18,33 @@ class DiskStorageProvider implements IStorageProvider {
 
             const originalPath = path.resolve(uploadConfig.tmpFolder, file)
 
-            const fileContent = await fs.promises.readFile(originalPath, {
-                encoding: 'utf-8',
-            }) //ler o arquivo
+            const ContentType = mime.getType(originalPath)
+
+            if(!ContentType) {
+                throw new Error('File not found')
+            }
+
+            const fileContent = await fs.promises.readFile(originalPath)
 
             await this.client.putObject({
-                Bucket: 'ap-gobarber', //nome da pastinha de bucket criada
+                Bucket: uploadConfig.config.aws.bucket, //nome da pastinha de bucket criada
                 Key: file, //qual sera nome do arquivo
                 ACL: 'public-read', //permissoes
-                Body: fileContent //conteudo do arquivo
+                Body: fileContent, //conteudo do arquivo
+                ContentType,
             }).promise()
+
+            await fs.promises.unlink(originalPath)//dps de add na aws exclui o arquivo localmente
 
             return file
     }
 
     public async deleteFile(file:string): Promise<void> {
-        const filePath = path.resolve(uploadConfig.uploadsFolder, file)
+        await this.client.deleteObject({
+            Bucket: uploadConfig.config.aws.bucket,
+            Key: file
+        }).promise()
 
-        try{
-            await fs.promises.stat(filePath) //se o arquivo existe
-
-        }catch{
-            return
-        }
-
-        await fs.promises.unlink(filePath) //exclui o arquivo
     }
 }
 
