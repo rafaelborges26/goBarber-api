@@ -12,11 +12,9 @@ public async create(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id
     const { provider_id, date } = request.body
 
-    const parsedDate = parseISO(date) //Transforma em Date
-
     const createAppointment = container.resolve(CreateAppointmentService)
 
-    const appointment = await createAppointment.execute({provider_id, date: parsedDate, user_id})
+    const appointment = await createAppointment.execute({provider_id, date, user_id})
 
     return response.json(appointment)
 

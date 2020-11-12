@@ -22,19 +22,25 @@ class ListProviderAppointmentsService {
 
     public async execute( {provider_id, year, month, day }:Request ): Promise<Appointment[]> {
 
+        const cacheKey = `provider-appointments:${provider_id}:${year}-${month}-${day}`
+
         //list redis
-        const cacheData = await this.cacheProvider.recover('ooi')
+        let appointments = await this.cacheProvider.recover<Appointment[]>(cacheKey)
 
-        console.log(cacheData)
+        if(!appointments) {
+            appointments = await this.appointmentsRepository.findAllInDayFromProvider({
+                provider_id,
+                year,
+                month,
+                day
+            })
 
-        const appointments = await this.appointmentsRepository.findAllInDayFromProvider({
-            provider_id,
-            year,
-            month,
-            day
-        })
+            console.log("buscou do banco")
 
-        //await this.cacheProvider.save('ooi', 'ooi')
+            await this.cacheProvider.save(cacheKey, appointments)
+        }
+
+
 
         return appointments
     }
