@@ -1,5 +1,6 @@
 import { inject, injectable } from 'tsyringe'
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider'
 import User from '@modules/users/infra/typeorm/entities/users'
 import IUsersRepository from '@modules/users/repositories/IUsersRepository'
 import AppError from '@shared/errors/AppError'
@@ -13,18 +14,32 @@ class ListProvidersService {
     constructor(
         @inject('UsersRepository')
         private usersRepository: IUsersRepository,
+
+        @inject('CacheProvider')
+        private cacheProvider: ICacheProvider
+
     ) {}
 
     public async execute( {user_id }:Request ):Promise<User[]> {
-        const user = await this.usersRepository.findAllProviders(
+        let users = await this.cacheProvider.recover<User[]>(`providers-list:${user_id}`) //os dados estao sendo buscados do cache
+
+        if(!users) {
+
+        users = await this.usersRepository.findAllProviders(
             {expect_user_id: user_id}
         )
 
-        if(!user) {
+        console.log('a query no banco feita')
+
+        if(!users) {
             throw new AppError('User not found')
         }
 
-        return user
+        await this.cacheProvider.save(`providers-list:${user_id}`, users)
+
+        }
+
+        return users
     }
 }
 
