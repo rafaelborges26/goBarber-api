@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import 'dotenv/config'
 
+import RateLimiter from './middlewares/RateLimiter'
 import express, { Request, Response, NextFunction } from 'express'
 import 'express-async-errors'
 import routes from './routes'
@@ -13,6 +14,7 @@ import { errors } from 'celebrate'
 
 const app = express()
 
+app.use(RateLimiter)
 app.use(cors())
 app.use(express.json())
 app.use('/files', express.static(uploadConfig.uploadsFolder))
