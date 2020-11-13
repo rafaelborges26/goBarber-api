@@ -2,17 +2,20 @@ import AppError from '@shared/errors/AppError'
 
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository'
 import CreateAppointmentService from './CreateAppointmentService'
-import FakeNotificationsRepository from 'modules/notifications/repositories/fakes/FakeNotificationsRepository'
+import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository'
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider'
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository
 let fakeNotificationsRepository: FakeNotificationsRepository
+let fakeCacheProvider: FakeCacheProvider
 let createAppointmentService: CreateAppointmentService
 
 describe('CreateAppointment', () => {
     beforeEach(() => {
         fakeAppointmentsRepository = new FakeAppointmentsRepository()
         fakeNotificationsRepository = new FakeNotificationsRepository()
-        createAppointmentService = new CreateAppointmentService(fakeAppointmentsRepository, fakeNotificationsRepository)
+        fakeCacheProvider = new FakeCacheProvider()
+        createAppointmentService = new CreateAppointmentService(fakeAppointmentsRepository, fakeNotificationsRepository, fakeCacheProvider)
     })
 
     it('should be able to create a new appointment', async () => {
@@ -85,7 +88,7 @@ describe('CreateAppointment', () => {
             return new Date(2020, 4, 10, 12).getTime() //retornando uma nova data
         })
 
-        await expect(createAppointmentService.execute({
+    await expect(createAppointmentService.execute({
          date: new Date(2020, 4, 11, 7), //uma hora atras
          user_id: 'user_id',
          provider_id: 'provider_id'
@@ -100,7 +103,5 @@ describe('CreateAppointment', () => {
 
 
      } )
-
-
 
 })

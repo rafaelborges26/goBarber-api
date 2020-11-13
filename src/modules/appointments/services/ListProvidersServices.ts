@@ -29,7 +29,7 @@ class ListProvidersService {
             {expect_user_id: user_id}
         )
 
-        console.log('a query no banco feita')
+        //console.log('a query no banco feita')
 
         if(!users) {
             throw new AppError('User not found')

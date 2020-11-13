@@ -3,16 +3,19 @@ import AppError from '@shared/errors/AppError'
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository'
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository'
 import ListProviderAppointmentsService from './ListProviderAppointmentsService'
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider'
+
 
     let listProviderAppointments: ListProviderAppointmentsService
     let fakeAppointmentsRepository: FakeAppointmentsRepository
-
+    let fakeCacheProvider: FakeCacheProvider
 
 describe('ListProviderMonthAvailability', () => {
 
     beforeEach(() => {
         fakeAppointmentsRepository = new FakeAppointmentsRepository()
-        listProviderAppointments = new ListProviderAppointmentsService(fakeAppointmentsRepository)
+        fakeCacheProvider = new FakeCacheProvider()
+        listProviderAppointments = new ListProviderAppointmentsService(fakeAppointmentsRepository, fakeCacheProvider)
 
     })
 

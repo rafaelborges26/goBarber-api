@@ -2,15 +2,18 @@ import AppError from '@shared/errors/AppError'
 
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository'
 import ListProvidersServices from './ListProvidersServices'
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider'
 
     let fakeUsersRepository: FakeUsersRepository
     let listProvider: ListProvidersServices
+    let fakeCacheProvider: FakeCacheProvider
 
 describe('ListProviders', () => {
 
     beforeEach(() => {
         fakeUsersRepository = new FakeUsersRepository()
-        listProvider = new ListProvidersServices(fakeUsersRepository)
+        fakeCacheProvider = new FakeCacheProvider()
+        listProvider = new ListProvidersServices(fakeUsersRepository, fakeCacheProvider)
     })
 
     it('should be able to list the providers', async () => {
