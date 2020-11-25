@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe'
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository'
-import { getDate, getDaysInMonth } from 'date-fns'
+import { getDate, getDaysInMonth, isAfter } from 'date-fns'
 
 interface Request {
     provider_id: string
@@ -27,6 +27,8 @@ class ListProviderMonthAvailabilityService {
            month
        })
 
+
+
        const numberOfDaysInMonth = getDaysInMonth(new Date(year, month -1)) //pegar o dia do mes se tem 29, 30 e 31
 
        const eachDayArray = Array.from(
@@ -35,13 +37,14 @@ class ListProviderMonthAvailabilityService {
        ) //criar um array do msm numero de dias obtidos
 
        const availability = eachDayArray.map(day => {
+        const compareDate = new Date(year, month - 1, day, 23, 59, 59)
+
             const appointmentsInDay = appointments.filter(appointment => { //agendamentos de cada dia
                 return getDate(appointment.date) === day;
             })
-
             return {
                  day,
-                 available: appointmentsInDay.length < 10 //se tiver menos que 10 agendamentos, temos um horario disponivel nesse dia
+                 available: isAfter( compareDate, new Date()) && appointmentsInDay.length < 10 //se tiver menos que 10 agendamentos, temos um horario disponivel nesse dia
                }
         }) //entrando em todos os dias do mes
 
