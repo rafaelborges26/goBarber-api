@@ -1,4 +1,5 @@
 import { inject, injectable } from 'tsyringe'
+import { classToClass } from 'class-transformer'
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository'
 import Appointment from '../infra/typeorm/entities/Appointment'
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider'
@@ -35,9 +36,7 @@ class ListProviderAppointmentsService {
                 day
             })
 
-            //console.log("buscou do banco")
-
-            await this.cacheProvider.save(cacheKey, appointments)
+            await this.cacheProvider.save(cacheKey, classToClass(appointments)) //salvar no cache os campos setados no classTOClass
         }
 
 

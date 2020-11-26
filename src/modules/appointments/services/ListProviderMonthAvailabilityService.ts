@@ -45,7 +45,7 @@ class ListProviderMonthAvailabilityService {
             return {
                  day,
                  available: isAfter( compareDate, new Date()) && appointmentsInDay.length < 10 //se tiver menos que 10 agendamentos, temos um horario disponivel nesse dia
-               }
+               }                    //para validar se o dia ja passou
         }) //entrando em todos os dias do mes
 
         return availability
