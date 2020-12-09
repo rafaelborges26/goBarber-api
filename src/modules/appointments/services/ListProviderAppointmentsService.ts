@@ -28,6 +28,8 @@ class ListProviderAppointmentsService {
         //list redis
         let appointments = await this.cacheProvider.recover<Appointment[]>(cacheKey)
 
+        //let appointments (para tirar o cache ativa essa linha e comenta a de cima)
+
         if(!appointments) {
             appointments = await this.appointmentsRepository.findAllInDayFromProvider({
                 provider_id,

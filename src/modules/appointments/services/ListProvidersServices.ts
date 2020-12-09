@@ -4,6 +4,7 @@ import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICa
 import User from '@modules/users/infra/typeorm/entities/users'
 import IUsersRepository from '@modules/users/repositories/IUsersRepository'
 import AppError from '@shared/errors/AppError'
+import { classToClass } from 'class-transformer'
 
 interface Request {
     user_id: string
@@ -22,7 +23,7 @@ class ListProvidersService {
 
     public async execute( {user_id }:Request ):Promise<User[]> {
         let users = await this.cacheProvider.recover<User[]>(`providers-list:${user_id}`) //os dados estao sendo buscados do cache
-
+        //let users //para limpar o cache, descomentar essa linha e comentar a de cima
         if(!users) {
 
         users = await this.usersRepository.findAllProviders(
@@ -35,7 +36,7 @@ class ListProvidersService {
             throw new AppError('User not found')
         }
 
-        await this.cacheProvider.save(`providers-list:${user_id}`, users)
+        await this.cacheProvider.save(`providers-list:${user_id}`, classToClass(users))
 
         }
 

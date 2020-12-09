@@ -1,7 +1,6 @@
 import {Request, Response} from 'express'
 import { container } from 'tsyringe'
-import { parseISO, } from 'date-fns'
-
+import { classToClass } from 'class-transformer'
 import ListProvidersService from '@modules/appointments/services/ListProvidersServices'
 
 
@@ -14,7 +13,7 @@ public async index(request: Request, response: Response): Promise<Response> {
 
     const provider = await listProviders.execute({user_id})
 
-    return response.json(provider)
+    return response.json(classToClass(provider))
 
 }
 
