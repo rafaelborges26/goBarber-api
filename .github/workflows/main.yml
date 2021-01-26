@@ -60,7 +60,7 @@ jobs:
 
 
        #Executar "yarn" na Digital Ocean/Executar as migrations do TypeORM e restartar para pegar as novas alterçes
-      - name: Install dependencies on Digital Ocean
+      - name: Run production scripts
         uses: appleboy/ssh-action@master
         with:
          host: ${{ secrets.SSH_HOST }}
