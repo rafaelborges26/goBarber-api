@@ -42,8 +42,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: "dist" #gerada pelo yarn build
-          target: "test"
+          source: "." #copiar tudo
+          target: "~/app/GoBarber-Bootcamp" #colar na pasta
 
 
 #Substituir o cdigo existente na pasta "dist" pelo novo codigo
