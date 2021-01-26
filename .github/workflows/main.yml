@@ -59,6 +59,38 @@ jobs:
           target: "~/app/GoBarber-Bootcamp" #colar na pasta
 
 
-#Executar "yarn" na Digital Ocean
-#Executar as migrations do TypeORM
-#Restart no servidor Node,js para pegar as novas alterações
+       #Executar "yarn" na Digital Ocean
+      - name: Install dependencies on Digital Ocean
+        uses: appleboy/ssh-action@master
+        with:
+         host: ${{ secrets.SSH_HOST }}
+         username: ${{ secrets.SSH_USER }}
+         port: ${{ secrets.SSH_PORT }}
+         key: ${{ secrets.SSH_KEY }}
+         script: | 
+              cd ~/app/GoBarber-Bootcamp
+              yarn
+
+        #Executar as migrations do TypeORM
+      - name: Run migrations on Digital Ocean
+        uses: appleboy/ssh-action@master
+        with:
+         host: ${{ secrets.SSH_HOST }}
+         username: ${{ secrets.SSH_USER }}
+         port: ${{ secrets.SSH_PORT }}
+         key: ${{ secrets.SSH_KEY }}
+         script: | 
+              cd ~/app/GoBarber-Bootcamp
+               ./node_modules/.bin/typeorm migration: run
+
+        #Restart no servidor Node,js para pegar as novas alterações
+      - name: Install dependencies on Digital Ocean
+        uses: appleboy/ssh-action@master
+        with:
+         host: ${{ secrets.SSH_HOST }}
+         username: ${{ secrets.SSH_USER }}
+         port: ${{ secrets.SSH_PORT }}
+         key: ${{ secrets.SSH_KEY }}
+         script: pm2 restart gobaber-api
+              
+
