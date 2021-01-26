@@ -25,6 +25,19 @@ jobs:
         with: 
           node-version: 14.x #versao LTS
         
+        #cache para o yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+         restore-keys: | 
+          ${{ runner.os }}-yarn-
+        
         #Instalar as dependencias Yarn/NPM
       - name: Install dependecies
         run: yarn
@@ -42,11 +55,10 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: "." #copiar tudo
+          source: ".,!node_modules" #copiar tudo
           target: "~/app/GoBarber-Bootcamp" #colar na pasta
 
 
-#Substituir o cdigo existente na pasta "dist" pelo novo codigo
 #Executar "yarn" na Digital Ocean
 #Executar as migrations do TypeORM
 #Restart no servidor Node,js para pegar as novas alterações
