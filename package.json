@@ -15,7 +15,7 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/redis": "^2.8.28",
     "aws-sdk": "^2.786.0",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "celebrate": "^13.0.3",
     "class-transformer": "^0.3.1",
