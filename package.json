@@ -14,7 +14,7 @@
     "@types/cors": "^2.8.7",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/redis": "^2.8.28",
-    "aws-sdk": "^2.786.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.20.0",
     "bcryptjs": "^2.4.3",
     "celebrate": "^13.0.3",
